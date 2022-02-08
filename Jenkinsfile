@@ -1,17 +1,24 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
-        stage('Build') {
+        stage('stash') {
+            agent { label "master"}
             steps {
-                echo 'Hello world'
+                writeFile file: "a.txt", text: "$BUILD_NUMBER"
+                stash(name: "abc", includes: "a.txt")
             }
         }
-    }
 
-    post {
-        always {
-            echo "pipeline post always"
+        stage('unstash') {
+            agent { label "chhan-fedora35"}
+            steps {
+                script {
+                    unstash("abc")
+                    def content = readFile("a.txt")
+                    echo "${content}"
+                }
+            }
         }
     }
 }
