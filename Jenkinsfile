@@ -4,14 +4,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Hello world'
+                withPythonEnv('/usr/bin/python') {
+                    sh 'python --version'
+                }
             }
-        }
-    }
-
-    post {
-        always {
-            echo "pipeline post always"
         }
     }
 }
