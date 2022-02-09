@@ -1,17 +1,17 @@
 pipeline {
     agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Hello world'
-            }
-        }
+    tools {
+        go 'go1.17.6'
     }
-
-    post {
-        always {
-            echo "pipeline post always"
+    environment {
+        GOPATH = "${env.WORKSPACE}"
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'printenv'
+                sh 'go version'
+            }
         }
     }
 }
