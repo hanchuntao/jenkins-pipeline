@@ -12,6 +12,7 @@ pipeline {
     post {
         always {
             echo "pipeline post always"
+            cleanWs()
         }
     }
 }
