@@ -2,11 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build with jdk-9.0.4') {
+            tools {
+                jdk "jdk-9.0.4"
+            }
             steps {
-                withPythonEnv('/usr/bin/python') {
-                    sh 'python --version'
-                }
+                sh "printenv"
+            }
+        }
+        stage('Build with jdk-9.0.1') {
+            tools {
+                jdk "jdk-9.0.1"
+            }
+            steps {
+                sh "printenv"
             }
         }
     }
