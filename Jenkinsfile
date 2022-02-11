@@ -1,17 +1,15 @@
 pipeline {
-    agent any
+    agent {label 'master'}
 
     stages {
-        stage('Build') {
+        stage('Deploy') {
             steps {
-                echo 'Hello world'
+                ansiblePlaybook(
+                    playbook: "${env.WORKSPACE}/playbook.yml",
+                    inventory: "${env.WORKSPACE}/hosts",
+                    credentialsId: 'chhan-fedora35'
+                )
             }
-        }
-    }
-
-    post {
-        always {
-            echo "pipeline post always"
         }
     }
 }
