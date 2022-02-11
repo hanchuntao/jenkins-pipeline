@@ -11,7 +11,7 @@ pipeline {
 
     post {
         always {
-            echo "pipeline post always"
+            mail body: 'test email function', from: 'chhan@redhat.com', subject: 'Build status', to: 'chhan'
         }
     }
 }
