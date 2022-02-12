@@ -2,22 +2,31 @@
 pipeline {
     agent any
     stages {
-        stage('Read json data') {
-            steps {
-                script {
-                    def props1 = readJSON text: '{ "key": "value" }'
-                    assert props1['key'] == 'value'
-                    assert props1.key == 'value'
-                    echo "${props1}"
+        stage('Run Test on different environment') {
+            parallel{
+                stage("Run Test on fedora35"){
+                    agent {
+                        node {
+                            label "chhan-fedora35"
+                        }
+                    }
+                    steps{
+                        script{
+                            echo "test on fedora35"
+                        }
+                    }
+                }
 
-                    def props2 = readJSON text: '[ "a", "b"]'
-                    assert props2[0] == 'a'
-                    assert props2[1] == 'b'
-
-                    def props3 = readJSON text: '{ "key": null, "a": "b" }', returnPojo: true
-                    assert props3['key'] == null
-                    props3.each { key, value ->
-                        echo "Walked through key $key and value $value"
+                stage("Run Test on Ubuntu21.04"){
+                    agent {
+                        node{
+                            label "ubuntu21.04"
+                        }
+                    }
+                    steps{
+                        script{
+                            echo "test on ubuntu21.04"
+                        }
                     }
                 }
             }
